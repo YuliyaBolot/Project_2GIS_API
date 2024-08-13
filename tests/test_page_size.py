@@ -29,7 +29,7 @@ class TestPageSize:
         assert message in regions['error']['message']
 
     @allure.title('Проверка НЕ числовых значений параметра page_size.')
-    @allure.issue('BUG: Код ответа = 200, а не 400.')
+    @allure.issue('BUG: Код ответа = 200, а не 400. Опечатка в тексте ошибки в слове должен.')
     @pytest.mark.parametrize('page_size', ['ajdjfk', ' ', ''])
     def test_page_size_different_digit(self, page_size):
         response = requests.get(f'{Urls.url_regions}?page_size={page_size}')

@@ -13,7 +13,7 @@ class TestGetAllRegions:
 
     @allure.title('Проверка приоритетности параметра query перед другими параметрами')
     def test_query_priority(self):
-        response = requests.get(f'{Urls.url_regions}?q=рск&country_code=cz&page=4&page_size=10')
+        response = requests.get(f'{Urls.url_regions}?q=рск&country_code=cz&page={4}&page_size={10}')
         length_items = len(response.json()['items'])
         regions_name = response.json()['items'][randint(0, length_items - 1)]['name']
         regions_code = response.json()['items'][randint(0, length_items - 1)]['country']['code']
@@ -21,7 +21,7 @@ class TestGetAllRegions:
 
     @allure.title('Проверка работы всех параметров без параметра query')
     def test_all_params_without_query(self):
-        response = requests.get(f'{Urls.url_regions}?country_code=ru&page=2&page_size=5')
+        response = requests.get(f'{Urls.url_regions}?country_code=ru&page={2}&page_size={5}')
         length_items = len(response.json()['items'])
         regions_code = response.json()['items'][randint(0, length_items - 1)]['country']['code']
         assert response.status_code == 200 and regions_code == 'ru' and length_items == 5
@@ -30,9 +30,9 @@ class TestGetAllRegions:
     @allure.issue('BUG: Количество регионов, указанных в total, не совпадает с количеством в списке items. '
                   'Количество в total и items неверно.')
     def test_total_equals_length_items(self):
-        response_page_one = requests.get(f'{Urls.url_regions}?page=1')
-        response_page_two = requests.get(f'{Urls.url_regions}?page=2')
-        response_page_three = requests.get(f'{Urls.url_regions}?page=3')
+        response_page_one = requests.get(f'{Urls.url_regions}?page={1}')
+        response_page_two = requests.get(f'{Urls.url_regions}?page={2}')
+        response_page_three = requests.get(f'{Urls.url_regions}?page={3}')
         length_items_page_one = len(response_page_one.json()['items'])
         length_items_page_two = len(response_page_two.json()['items'])
         length_items_page_three = len(response_page_three.json()['items'])
@@ -43,9 +43,9 @@ class TestGetAllRegions:
     @allure.title('Отсутсвие повторений в списке items')
     @allure.issue('BUG: Последний город на одной странице равен первому городу на следующей странице.')
     def test_absence_reiterations_in_items(self):
-        response_page_one = requests.get(f'{Urls.url_regions}?page=1')
-        response_page_two = requests.get(f'{Urls.url_regions}?page=2')
-        response_page_three = requests.get(f'{Urls.url_regions}?page=3')
+        response_page_one = requests.get(f'{Urls.url_regions}?page={1}')
+        response_page_two = requests.get(f'{Urls.url_regions}?page={2}')
+        response_page_three = requests.get(f'{Urls.url_regions}?page={3}')
         last_region_name_page_one = response_page_one.json()['items'][-1]['name']
         first_region_name_page_two = response_page_two.json()['items'][0]['name']
         last_region_name_page_two = response_page_one.json()['items'][-1]['name']

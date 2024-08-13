@@ -38,7 +38,7 @@ class TestQueryParam:
 
     @allure.title('Поиск по названию региона - цифры в названии')
     def test_query_param_with_digits(self):
-        response = requests.get(f'{Urls.url_regions}?q=567432')
+        response = requests.get(f'{Urls.url_regions}?q={567432}')
         regions = response.json()
         assert response.status_code == 200 and 'items' in regions
 
