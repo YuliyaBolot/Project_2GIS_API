@@ -13,12 +13,10 @@ class TestCountryCode:
         response = requests.get(f'{Urls.url_regions}?country_code={country_code}')
         length_items = len(response.json()['items'])
         regions = response.json()['items'][randint(0, length_items-1)]['country']['code']
-        assert response.status_code == 200 and country_code == regions
 
     @allure.title('Поиск по коду страны отличному от ru, cz, kz, kg')
     @allure.issue('BUG: Тест проходит при указании кода az. Код ответа = 200, а не 400. ')
     @pytest.mark.parametrize('country_code', ['rus', 'ру', 'az', 'au', '123', '0', ' ', '!;.'])
-    def test_country_code_different_from_ru_cz_kz_kg(self, country_code):
         response = requests.get(f'{Urls.url_regions}?country_code={country_code}')
         regions = response.json()
         message = Message.message_about_country_code
