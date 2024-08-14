@@ -26,7 +26,7 @@ class TestGetAllRegions:
         regions_code = response.json()['items'][randint(0, length_items - 1)]['country']['code']
         assert response.status_code == 200 and regions_code == 'ru' and length_items == 5
 
-    @allure.title('Проверка равенства значения total количеству регионов в items')
+    @allure.title('Проверка равенства значения total общему количеству регионов в items')
     @allure.issue('BUG: Количество регионов, указанных в total, не совпадает с количеством в списке items. '
                   'Количество в total и items неверно.')
     def test_total_equals_length_items(self):
@@ -52,3 +52,11 @@ class TestGetAllRegions:
         first_region_name_page_three = response_page_three.json()['items'][0]['name']
         assert (last_region_name_page_one != first_region_name_page_two and
                 last_region_name_page_two != first_region_name_page_three)
+
+    @allure.title('Проверка изменения значения total в зависимости от изменения количества регионов в items')
+    @allure.issue('BUG: Значение total остается неизменным, не смотря на изменение количества регионов в списке items.')
+    def test_change_total_if_change_items(self):
+        response = requests.get(f'{Urls.url_regions}?country_code=cz')
+        total = response.json()['total']
+        length_items = len(response.json()['items'])
+        assert total == length_items
